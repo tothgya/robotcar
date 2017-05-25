@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#stop").click(function(){
+        $.ajax({url: "http://" + document.domain + ":8080/stop", success: function(result){
+            $("#div1").html(result);
+        }});
+    });
+    $("#accelerate").click(function(){
+        $.ajax({url: "http://" + document.domain + ":8080/accelerate", success: function(result){
+            $("#div1").html(result);
+        }});
+    });
+    $("#brake").click(function(){
+        $.ajax({url: "http://" + document.domain + ":8080/brake", success: function(result){
+            $("#div1").html(result);
+        }});
+    });
+    $("#left").click(function(){
+        $.ajax({url: "http://" + document.domain + ":8080/left", success: function(result){
+            $("#div1").html(result);
+        }});
+    });
+    $("#right").click(function(){
+        $.ajax({url: "http://" + document.domain + ":8080/right", success: function(result){
+            $("#div1").html(result);
+        }});
+    });
+    $("#horn").click(function(){
+        $.ajax({url: "http://" + document.domain + ":8080/horn", success: function(result){
+            $("#div1").html(result);
+        }});
+    });
+
+    
+});
+</script>
+</head>
+<body>
+
+<div id="div1"></div>
+
+<table>
+    <tr><td></td><td><button id="accelerate">Accelerate</button></td><td></td></tr>
+    <tr><td><button id="left">Left</button></td><td><button id="stop">Stop</button></td><td><button id="right">Right</button></td></tr>
+    <tr><td></td><td><button id="brake">Brake</button></td><td></td></tr>
+    <tr><td><button id="horn">Horn</button></td><td></td><td></td></tr>
+</table>
+
+
+
+</body>
+</html>

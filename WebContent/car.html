@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="jquery-ui-1.12.1.custom/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 $(document).ready(function(){
     $("#stop").click(function(){
@@ -13,9 +16,15 @@ $(document).ready(function(){
         $.ajax({url: "http://" + document.domain + ":8080/accelerate", success: function(result){
             $("#div1").html(result);
         }});
+        $.ajax({url: "http://" + document.domain + ":8080/turn/" + $( "#slider" ).value, success: function(result){
+            $("#div1").html(result);
+        }});
     });
     $("#brake").click(function(){
         $.ajax({url: "http://" + document.domain + ":8080/brake", success: function(result){
+            $("#div1").html(result);
+        }});
+        $.ajax({url: "http://" + document.domain + ":8080/turn/" + $( "#slider" ).value, success: function(result){
             $("#div1").html(result);
         }});
     });
@@ -37,6 +46,21 @@ $(document).ready(function(){
 
     
 });
+  $( function() {
+    $( "#slider" ).slider({
+      value:0,
+      min: -5,
+      max: 5,
+      step: 1,
+      slide: function( event, ui ) {
+        $.ajax({url: "http://" + document.domain + ":8080/turn/" + ui.value, success: function(result){
+            $("#div1").html(result);
+        }});
+      }
+    });
+    $( "#amount" ).val( "$" + $( "#slider" ).slider( "value" ) );
+  } );
+
 </script>
 </head>
 <body>
@@ -45,8 +69,13 @@ $(document).ready(function(){
 
 <table>
     <tr><td></td><td><button id="accelerate">Accelerate</button></td><td></td></tr>
-    <tr><td><button id="left">Left</button></td><td><button id="stop">Stop</button></td><td><button id="right">Right</button></td></tr>
+    <tr>
+    	<td><!--<button id="left">Left</button>--></td>
+    	<td><button id="stop">Stop</button></td>  
+    	<td><!--<button id="right">Right</button>--></td>
+    </tr>
     <tr><td></td><td><button id="brake">Brake</button></td><td></td></tr>
+    <tr><td colspan="3"><div id="slider"></div></td></tr>
     <tr><td><button id="horn">Horn</button></td><td></td><td></td></tr>
 </table>
 

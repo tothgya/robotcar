@@ -30,20 +30,31 @@ class Car:
     
     minThrottle = minVoltage / maxVoltage
 
-    def normalizeSpeed(self, s):
-        if s < -1:
+    def normalizeSpeed(self, s, direction):
+        if direction == 'FORWARD':
+            if s < -1:
+                return -1
+            if s < -self.minThrottle:
+                return s
+            if s < 0:
+                return 0
+            if s < self.minThrottle:
+                return self.minThrottle
+            if s < 1:
+                return s
+            return 1
+        else:
+            if s > 1:
+                return 1
+            if s > self.minThrottle:
+                return s
+            if s > 0:
+                return 0
+            if s > -self.minThrottle:
+                return -self.minThrottle
+            if s > -1:
+                return s
             return -1
-        if s < -self.minThrottle:
-            return s
-        if s < 0:
-            return -self.minThrottle
-        if s == 0:
-            return 0
-        if s < self.minThrottle:
-            return self.minThrottle
-        if s < 1:
-            return s
-        return 1
     
     @staticmethod
     def setSpeed(pinS, pinD, s):
@@ -59,7 +70,7 @@ class Car:
         self.speed = self.speed + increment
         if self.speed > 1:
             self.speed = 1
-        s = self.normalizeSpeed(self.speed)
+        s = self.normalizeSpeed(self.speed, 'FORWARD')
         Car.setSpeed(self.pinLeftPower, self.pinLeftDirection, s)
         Car.setSpeed(self.pinRightPower, self.pinRightDirection, s)
 
@@ -68,17 +79,17 @@ class Car:
         if self.speed < -1:
             self.speed = -1
         
-        s = self.normalizeSpeed(self.speed)
+        s = self.normalizeSpeed(self.speed, 'BACKWARD')
         Car.setSpeed(self.pinLeftPower, self.pinLeftDirection, s)
         Car.setSpeed(self.pinRightPower, self.pinRightDirection, s)
         
     def turn(self, r):
         if r > 0:
-            leftSpeed = self.normalizeSpeed(self.speed - (r * increment))
-            rightSpeed = self.normalizeSpeed(self.speed) 
+            leftSpeed = self.normalizeSpeed(self.speed - (r * increment), 'BACKWARD')
+            rightSpeed = self.normalizeSpeed(self.speed, 'FORWARD') 
         else:
-            rightSpeed = self.normalizeSpeed(self.speed - (r * increment)) 
-            leftSpeed = self.normalizeSpeed(self.speed)
+            rightSpeed = self.normalizeSpeed(self.speed - (r * increment), 'BACKWARD') 
+            leftSpeed = self.normalizeSpeed(self.speed, 'FORWARD')
         Car.setSpeed(self.pinLeftPower, self.pinLeftDirection, leftSpeed)
         Car.setSpeed(self.pinRightPower, self.pinRightDirection, rightSpeed)
 

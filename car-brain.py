@@ -56,9 +56,8 @@ class Car:
                 return s
             return -1
     
-    @staticmethod
-    def setSpeed(pinS, pinD, s):
-        print pinS, pinD, s
+    def setSpeed(self, pinS, pinD, s):
+        print pinS, pinD, s, self.speed
         if s > 0:
             pinS.write(s)
             pinD.write(0)
@@ -68,35 +67,33 @@ class Car:
             
     def accelerate(self):
         self.speed = self.speed + increment
-        if self.speed > 1:
-            self.speed = 1
-        s = self.normalizeSpeed(self.speed, 'FORWARD')
-        Car.setSpeed(self.pinLeftPower, self.pinLeftDirection, s)
-        Car.setSpeed(self.pinRightPower, self.pinRightDirection, s)
+        self.speed = self.normalizeSpeed(self.speed, 'FORWARD')
+        self.setSpeed(self.pinLeftPower, self.pinLeftDirection, self.speed)
+        self.setSpeed(self.pinRightPower, self.pinRightDirection, self.speed)
 
     def brake(self):
         self.speed = self.speed - increment
-        if self.speed < -1:
-            self.speed = -1
-        
-        s = self.normalizeSpeed(self.speed, 'BACKWARD')
-        Car.setSpeed(self.pinLeftPower, self.pinLeftDirection, s)
-        Car.setSpeed(self.pinRightPower, self.pinRightDirection, s)
+        self.speed = self.normalizeSpeed(self.speed, 'BACKWARD')
+        self.setSpeed(self.pinLeftPower, self.pinLeftDirection, self.speed)
+        self.setSpeed(self.pinRightPower, self.pinRightDirection, self.speed)
         
     def turn(self, r):
         if r > 0:
-            leftSpeed = self.normalizeSpeed(self.speed - (r * increment), 'BACKWARD')
-            rightSpeed = self.normalizeSpeed(self.speed, 'FORWARD') 
-        else:
             rightSpeed = self.normalizeSpeed(self.speed - (r * increment), 'BACKWARD') 
             leftSpeed = self.normalizeSpeed(self.speed, 'FORWARD')
-        Car.setSpeed(self.pinLeftPower, self.pinLeftDirection, leftSpeed)
-        Car.setSpeed(self.pinRightPower, self.pinRightDirection, rightSpeed)
+        if r < 0:
+            leftSpeed = self.normalizeSpeed(self.speed - (r * increment), 'BACKWARD')
+            rightSpeed = self.normalizeSpeed(self.speed, 'FORWARD') 
+        if r == 0:
+            rightSpeed = self.normalizeSpeed(self.speed, 'FORWARD') 
+            leftSpeed = self.normalizeSpeed(self.speed, 'FORWARD')
+        self.setSpeed(self.pinLeftPower, self.pinLeftDirection, leftSpeed)
+        self.setSpeed(self.pinRightPower, self.pinRightDirection, rightSpeed)
 
     def stop(self):
         self.speed = 0;
-        Car.setSpeed(self.pinLeftPower, self.pinLeftDirection, self.speed)
-        Car.setSpeed(self.pinRightPower, self.pinRightDirection, self.speed)
+        self.setSpeed(self.pinLeftPower, self.pinLeftDirection, self.speed)
+        self.setSpeed(self.pinRightPower, self.pinRightDirection, self.speed)
 
     def horn(self):
         self.pinHorn.write(1)

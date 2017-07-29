@@ -1,5 +1,6 @@
 #!/usr/bin/python
 from pyfirmata import Arduino, util
+import time
 
 # micro USB on Arduino UNO
 arduinoDev = '/dev/ttyUSB0'

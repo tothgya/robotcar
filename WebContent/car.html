@@ -1,84 +1,151 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="jquery-ui-1.12.1.custom/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="jquery-ui-1.12.1.custom/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
-$(document).ready(function(){
-    $("#stop").click(function(){
-        $.ajax({url: "http://" + document.domain + ":8080/stop", success: function(result){
-            $("#div1").html(result);
-        }});
-    });
-    $("#accelerate").click(function(){
-        $.ajax({url: "http://" + document.domain + ":8080/accelerate", success: function(result){
-            $("#div1").html(result);
-        }});
-        $.ajax({url: "http://" + document.domain + ":8080/turn/" + $( "#slider" ).value, success: function(result){
-            $("#div1").html(result);
-        }});
-    });
-    $("#brake").click(function(){
-        $.ajax({url: "http://" + document.domain + ":8080/brake", success: function(result){
-            $("#div1").html(result);
-        }});
-        $.ajax({url: "http://" + document.domain + ":8080/turn/" + $( "#slider" ).value, success: function(result){
-            $("#div1").html(result);
-        }});
-    });
-    $("#left").click(function(){
-        $.ajax({url: "http://" + document.domain + ":8080/left", success: function(result){
-            $("#div1").html(result);
-        }});
-    });
-    $("#right").click(function(){
-        $.ajax({url: "http://" + document.domain + ":8080/right", success: function(result){
-            $("#div1").html(result);
-        }});
-    });
-    $("#horn").click(function(){
-        $.ajax({url: "http://" + document.domain + ":8080/horn", success: function(result){
-            $("#div1").html(result);
-        }});
-    });
+	$(document).ready(
+			function() {
+				$("#stop").click(function() {
+					$.ajax({
+						url : "http://" + document.domain + ":8080/stop",
+						success : function(result) {
+							$("#div1").html(result);
+						}
+					});
+				});
+				$("#accelerate").click(
+						function() {
+							$.ajax({
+								url : "http://" + document.domain
+										+ ":8080/accelerate",
+								success : function(result) {
+									$("#div1").html(result);
+								}
+							});
+							$.ajax({
+								url : "http://" + document.domain
+										+ ":8080/turn/" + $("#slider").value,
+								success : function(result) {
+									$("#div1").html(result);
+								}
+							});
+						});
+				$("#brake").click(
+						function() {
+							$.ajax({
+								url : "http://" + document.domain
+										+ ":8080/brake",
+								success : function(result) {
+									$("#div1").html(result);
+								}
+							});
+							$.ajax({
+								url : "http://" + document.domain
+										+ ":8080/turn/" + $("#slider").value,
+								success : function(result) {
+									$("#div1").html(result);
+								}
+							});
+						});
+				$("#left").click(function() {
+					$.ajax({
+						url : "http://" + document.domain + ":8080/left",
+						success : function(result) {
+							$("#div1").html(result);
+						}
+					});
+				});
+				$("#right").click(function() {
+					$.ajax({
+						url : "http://" + document.domain + ":8080/right",
+						success : function(result) {
+							$("#div1").html(result);
+						}
+					});
+				});
+				$("#horn").click(function() {
+					$.ajax({
+						url : "http://" + document.domain + ":8080/horn",
+						success : function(result) {
+							$("#div1").html(result);
+						}
+					});
+				});
 
-    
-});
-  $( function() {
-    $( "#slider" ).slider({
-      value:0,
-      min: -5,
-      max: 5,
-      step: 1,
-      slide: function( event, ui ) {
-        $.ajax({url: "http://" + document.domain + ":8080/turn/" + ui.value, success: function(result){
-            $("#div1").html(result);
-        }});
-      }
-    });
-    $( "#amount" ).val( "$" + $( "#slider" ).slider( "value" ) );
-  } );
-
+			});
+	$(function() {
+		$("#slider").slider(
+				{
+					value : 0,
+					min : -5,
+					max : 5,
+					step : 1,
+					slide : function(event, ui) {
+						$.ajax({
+							url : "http://" + document.domain + ":8080/turn/"
+									+ ui.value,
+							success : function(result) {
+								$("#div1").html(result);
+							}
+						});
+					}
+				});
+		$("#amount").val("$" + $("#slider").slider("value"));
+	});
 </script>
 </head>
 <body>
 
-<div id="div1"></div>
-
-<table>
-    <tr><td></td><td><button id="accelerate">Accelerate</button></td><td></td></tr>
-    <tr>
-    	<td><!--<button id="left">Left</button>--></td>
-    	<td><button id="stop">Stop</button></td>  
-    	<td><!--<button id="right">Right</button>--></td>
-    </tr>
-    <tr><td></td><td><button id="brake">Brake</button></td><td></td></tr>
-    <tr><td colspan="3"><div id="slider"></div></td></tr>
-    <tr><td><button id="horn">Horn</button></td><td></td><td></td></tr>
-</table>
-
+	<div id="div1"></div>
+	<table>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td></td>
+						<td><button id="horn">Horn</button></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<!--<button id="left">Left</button>-->
+						</td>
+						<td style="height: 50px"><div id="div1"></div></td>
+						<td>
+							<!--<button id="right">Right</button>-->
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<div style="width: 275px;">
+								<span style="border-spacing: 0px; display:inline-block; width: 21px; font-family: monospace; font-size: xx-small; text-align: center;">-5</span>
+								<span style="border-spacing: 0px; display:inline-block; width: 21px; font-family: monospace; font-size: xx-small; text-align: center;">-4</span>
+								<span style="border-spacing: 0px; display:inline-block; width: 21px; font-family: monospace; font-size: xx-small; text-align: center;">-3</span>
+								<span style="border-spacing: 0px; display:inline-block; width: 21px; font-family: monospace; font-size: xx-small; text-align: center;">-2</span>
+								<span style="border-spacing: 0px; display:inline-block; width: 21px; font-family: monospace; font-size: xx-small; text-align: center;">-1</span>
+								<span style="border-spacing: 0px; display:inline-block; width: 21px; font-family: monospace; font-size: xx-small; text-align: center;">0</span>
+								<span style="border-spacing: 0px; display:inline-block; width: 21px; font-family: monospace; font-size: xx-small; text-align: center;">1</span>
+								<span style="border-spacing: 0px; display:inline-block; width: 21px; font-family: monospace; font-size: xx-small; text-align: center;">2</span>
+								<span style="border-spacing: 0px; display:inline-block; width: 21px; font-family: monospace; font-size: xx-small; text-align: center;">3</span>
+								<span style="border-spacing: 0px; display:inline-block; width: 21px; font-family: monospace; font-size: xx-small; text-align: center;">4</span>
+								<span style="border-spacing: 0px; display:inline-block; width: 21px; font-family: monospace; font-size: xx-small; text-align: center;">5</span>
+							</div>
+							<div id="slider" style="width: 275px;"></div>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td style="width: 50px"></td>
+			<td><table>
+			<tr><td><button id="accelerate">Accelerate</button></td></tr>
+			<tr><td><button id="stop">Stop</button></td></tr>
+			<tr><td><button id="brake">Brake</button></td></tr>
+				</table></td>
+		</tr>
+	</table>
 
 
 </body>

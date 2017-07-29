@@ -1,11 +1,5 @@
 #!/usr/bin/python
-import time
-import BaseHTTPServer
-
 from pyfirmata import Arduino, util
-
-HOST_NAME = '192.168.0.27' # !!!REMEMBER TO CHANGE THIS!!!
-PORT_NUMBER = 8080 # Maybe set this to 9000.
 
 # micro USB on Arduino UNO
 arduinoDev = '/dev/ttyUSB0'
@@ -101,56 +95,3 @@ class Car:
         self.pinHorn.write(0)
         
 
-car = Car()
-
-class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
-    
-    def address_string(self):
-        # return BaseHTTPServer.BaseHTTPRequestHandler.address_string(self)
-        return str(self.client_address[0])
-    
-    def do_HEAD(s):
-        s.send_response(200)
-        s.send_header("Content-type", "text/html")
-        s.end_headers()
-    def do_GET(s):
-        """Respond to a GET request."""
-        start = time.time()
-        s.send_response(200)
-        s.send_header("Content-type", "text/html")
-        s.end_headers()
-        # If someone went to "http://something.somewhere.net/foo/bar/",
-        # then s.path equals "/foo/bar/".
-        p = s.path.split('/')
-        if p[1] == 'accelerate':
-            car.accelerate()
-        if p[1] == 'brake':
-            car.brake()
-        if p[1] == 'stop':
-            car.stop()
-        if p[1] == 'horn':
-            car.horn()
-        if p[1] == 'turn':
-            turnSpeed = 0
-            if  p[2] != 'undefined':
-                turnSpeed = int(p[2])
-            car.turn(turnSpeed)
-        s.wfile.write("<p>Speed: ")
-        s.wfile.write(car.speed)
-        s.wfile.write("</p><p>Time: ")
-        s.wfile.write(time.time() - start)
-        s.wfile.write("</p>")
-        s.finish()
-                     
-	
-
-if __name__ == '__main__':
-    server_class = BaseHTTPServer.HTTPServer
-    httpd = server_class((HOST_NAME, PORT_NUMBER), MyHandler)
-    print time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER)
-    try:
-        httpd.serve_forever()
-    except KeyboardInterrupt:
-        pass
-    httpd.server_close()
-    print time.asctime(), "Server Stops - %s:%s" % (HOST_NAME, PORT_NUMBER)

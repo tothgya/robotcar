@@ -9,7 +9,7 @@ arduinoDev = '/dev/ttyUSB0'
 
 board = Arduino(arduinoDev)
 
-maxVoltage = 7.2
+maxVoltage = 9.6
 minVoltage = 3.0
 increment = 0.1
 
@@ -38,7 +38,7 @@ class Car:
             if s < 1:
                 return s
             return 1
-        else:
+        elif direction == 'BACKWARD':
             if s > 1:
                 return 1
             if s > self.minThrottle:
@@ -47,6 +47,16 @@ class Car:
                 return 0
             if s > -self.minThrottle:
                 return -self.minThrottle
+            if s > -1:
+                return s
+            return -1
+        else: # NEUTRAL
+            if s > 1:
+                return 1
+            if s > self.minThrottle:
+                return s
+            if s > -self.minThrottle:
+                return 0
             if s > -1:
                 return s
             return -1
@@ -59,6 +69,12 @@ class Car:
         else:
             pinS.write(-s)
             pinD.write(1)
+
+    def setAllSpeed(self, s):
+        self.speed = s
+        self.speed = self.normalizeSpeed(self.speed, 'NEUTRAL')
+        self.setSpeed(self.pinLeftPower, self.pinLeftDirection, self.speed)
+        self.setSpeed(self.pinRightPower, self.pinRightDirection, self.speed)
             
     def accelerate(self):
         self.speed = self.speed + increment
@@ -73,15 +89,16 @@ class Car:
         self.setSpeed(self.pinRightPower, self.pinRightDirection, self.speed)
         
     def turn(self, r):
+        print 'Turning: ' + str(r)
         if r > 0:
             rightSpeed = self.normalizeSpeed(self.speed - (r * increment), 'BACKWARD') 
             leftSpeed = self.normalizeSpeed(self.speed, 'FORWARD')
         if r < 0:
-            leftSpeed = self.normalizeSpeed(self.speed - (r * increment), 'BACKWARD')
+            leftSpeed = self.normalizeSpeed(self.speed - (-r * increment), 'BACKWARD')
             rightSpeed = self.normalizeSpeed(self.speed, 'FORWARD') 
         if r == 0:
-            rightSpeed = self.normalizeSpeed(self.speed, 'FORWARD') 
-            leftSpeed = self.normalizeSpeed(self.speed, 'FORWARD')
+            rightSpeed = self.normalizeSpeed(self.speed, 'NEUTRAL') 
+            leftSpeed = self.normalizeSpeed(self.speed, 'NEUTRAL')
         self.setSpeed(self.pinLeftPower, self.pinLeftDirection, leftSpeed)
         self.setSpeed(self.pinRightPower, self.pinRightDirection, rightSpeed)
 

@@ -16,7 +16,7 @@ arduinoDev = '/dev/ttyUSB0'
 
 board = Arduino(arduinoDev)
 
-maxVoltage = 7.2
+maxVoltage = 9.6
 minVoltage = 3.0
 increment = 0.1
 print "Arduino ready"
@@ -33,6 +33,12 @@ print "Bluetooth ready, wainting for connections"
 s.listen(backlog)
 # uuid = "34B1CF4D-1069-4AD6-89B6-E161D79BE4D8" # Windows 10 example app
 uuid = "fa87c0d0-afac-11de-8a39-0800200c9a66"  # Android secure example app
+
+# VR BOX
+# [CHG] Device 12:21:06:08:A9:98 UUIDs:
+#         00001124-0000-1000-8000-00805f9b34fb
+#         00001200-0000-1000-8000-00805f9b34fb
+
 
 bluetooth.advertise_service(s, "SampleServer",
                   service_id=uuid,

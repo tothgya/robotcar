@@ -31,7 +31,7 @@ try:
 except NameError:
     print 'Gamepad not found'
     sys.exit()
-devices = {dev.fd: dev for dev in devices}
+devices = {dev.fd: dev for dev in [gamepad]}
 while True:
     r, w, x = select(devices, [], [], 2)
     if not r:

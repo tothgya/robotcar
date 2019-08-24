@@ -62,7 +62,6 @@ class Car:
             return -1
     
     def setSpeed(self, pinS, pinD, s):
-        print pinS, pinD, s, self.speed
         pinSValue = 0
         pinDValue = 0
         if s > 0:

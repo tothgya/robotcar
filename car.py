@@ -71,7 +71,7 @@ class Car:
             pinSValue = -s
             pinDValue = 1
         
-        if pinSValue != 0 and pinDValue != 0:
+        if pinSValue != 0 or pinDValue != 0:
             print pinS, '=', pinSValue, '|', pinD, '=', pinDValue
             pinS.write(pinSValue)
             pinD.write(pinDValue)

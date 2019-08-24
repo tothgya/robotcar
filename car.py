@@ -64,12 +64,12 @@ class Car:
     def setSpeed(self, pinS, pinD, s):
         pinSValue = 0
         pinDValue = 0
-        if s > 0:
-            pinSValue = s
-            pinDValue = 0
-        else:
+        if s < 0:
             pinSValue = -s
             pinDValue = 1
+        else:
+            pinSValue = s
+            pinDValue = 0
         
         if pinSValue != 0 or pinDValue != 0:
             print pinS, '=', pinSValue, '|', pinD, '=', pinDValue

@@ -73,8 +73,8 @@ class Car:
         
         if pinSValue != 0 or pinDValue != 0:
             print pinS, '=', pinSValue, '|', pinD, '=', pinDValue
-            pinS.write(pinSValue)
-            pinD.write(pinDValue)
+        pinS.write(pinSValue)
+        pinD.write(pinDValue)
 
     def setAllSpeed(self, s):
         self.speed = s

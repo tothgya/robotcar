@@ -95,7 +95,8 @@ class Car:
         self.setSpeed(self.pinRightPower, self.pinRightDirection, self.speed)
         
     def turn(self, r):
-        print 'Turning: ' + str(r)
+        if r != 0:
+            print 'Turning: ' + str(r)
         if r > 0:
             rightSpeed = self.normalizeSpeed(self.speed - (r * increment), 'BACKWARD') 
             leftSpeed = self.normalizeSpeed(self.speed, 'FORWARD')
